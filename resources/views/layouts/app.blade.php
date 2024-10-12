@@ -6,11 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
-    <!-- Scripts -->
+    
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
+    <link rel="stylesheet" href="{{ asset('css/viking.css') }}">
 </head>
 <body>
     <div id="app">
@@ -68,9 +66,10 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
+
+            <div id="main">
+                @yield('content')
+            </div>
+
 </body>
 </html>

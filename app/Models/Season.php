@@ -25,4 +25,14 @@ class Season extends Model
         'start_date' => 'date',
         'end_date' => 'date',
     ];
+
+    public function competitions()
+{
+    return $this->hasMany(Competition::class);
+}
+
+public function teams()
+{
+    return $this->hasMany(Team::class);
+}
 }

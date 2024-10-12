@@ -1,0 +1,37 @@
+.navbar-viking {
+    background: linear-gradient(315deg, #056507,  #038706, #038706);
+}
+.dropdown-menu {
+    background-color: transparent;
+    padding-left: 20px;
+    border:none;
+}
+.card-viking {
+    background: linear-gradient(135deg, #056507,  #038706, #038706);
+    color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.card-viking td {
+    background-color: transparent;
+    color: #fff;
+    padding:0px;
+}
+
+.card-viking  .card-title {
+    font-size: 1.5rem;
+    font-weight:400;
+    margin-bottom: 1rem;
+}
+
+.card-viking  .card-body {
+    padding: 1rem;
+}
+
+.card-viking .card-text {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
