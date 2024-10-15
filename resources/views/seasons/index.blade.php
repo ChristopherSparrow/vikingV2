@@ -12,6 +12,7 @@
 					<div class="card-title d-flex justify-content-between align-items-center">
 						<div class="d-flex align-items-center"><strong>{{ $season->name }}</strong></div>
 					</div>
+                    
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -20,10 +21,19 @@
                                     </td>
                                     </tr>
                                     <tr><td>
+                                        <p style="padding-top:10px; padding-bottom:10px; margin-bottom:0px; font-size:1.1rem;">
+                                            <a style="color:#ffffff;" href="{{ route('seasons.teams', $season->id) }}" >View Teams</a>
+                                             | <a style="color:#ffffff;" href="{{ route('seasons.players', $season->id) }}" >View Players</a>
+                                        </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                         
                                             @foreach ($season->competitions as $competition)
+          
                                             <p style="padding-top:10px; padding-bottom:10px; margin-bottom:0px; font-size:1.1rem;">
-                                                <a href="{{ route('competitions.show', $competition) }}">
+                                                <a style="color:#ffffff;" href="{{ route('competitions.show', $competition) }}">
                                                     {{ $competition->name }}
                                                 </a>
                                             </p>

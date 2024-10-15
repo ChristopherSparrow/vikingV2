@@ -18,4 +18,9 @@ class Team extends Model
     {
         return $this->belongsTo(Season::class);
     }
+
+    public function players()
+{
+    return $this->belongsToMany(Player::class, 'team_player', 'team_id', 'player_id')->withTimestamps();
+}
 }
