@@ -14,7 +14,7 @@ class SeasonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() // Remove the type declaration from here
+    public function index(): \Illuminate\Contracts\View\View // Add the type declaration here
     {
         $seasons = Season::all(); // Fetch all seasons from the database
         return view('seasons.index', compact('seasons')); // Pass seasons to the view

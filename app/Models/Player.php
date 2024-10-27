@@ -9,5 +9,10 @@ class Player extends Model
 {
     use HasFactory;
 
-    // Add any relationships or fillable fields here
+    protected $fillable = ['team_id', 'name'];
+
+    public function team()
+{
+    return $this->belongsTo(Team::class);
+}
 }

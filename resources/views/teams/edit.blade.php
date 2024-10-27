@@ -14,15 +14,21 @@
             <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $team->name) }}" required>
         </div>
 
-        <!-- Other fields for editing (replace with actual fields) -->
+        <!-- Team Captain -->
         <div class="form-group">
-            <label for="other_field">Other Field</label>
-            <input type="text" name="other_field" id="other_field" class="form-control" value="{{ old('other_field', $team->other_field) }}" required>
+            <label for="captain">Captain</label>
+            <input type="text" name="captain" id="captain" class="form-control" value="{{ old('captain', $team->captain) }}" required>
         </div>
 
-        <!-- Add more fields here as necessary -->
+        <!-- Vice Captain -->
+        <div class="form-group">
+        <label for="vicecaptain">Vice Captain</label>
+        <input type="text" name="vicecaptain" id="vicecaptain" class="form-control" value="{{ old('vicecaptain', $team->vicecaptain) }}" required>
+        </div>
+
 
         <button type="submit" class="btn btn-primary">Update Team</button>
+        <a href="{{ route('seasons.teams', $season->id) }}">Back</button> 
     </form>
 </div>
 @endsection

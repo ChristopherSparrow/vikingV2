@@ -12,14 +12,17 @@
             <label for="name">Team Name</label>
             <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
         </div>
-
-        <!-- Other fields for the team -->
+        <!-- Team Captain -->
         <div class="form-group">
-            <label for="other_field">Other Field</label>
-            <input type="text" name="other_field" id="other_field" class="form-control" value="{{ old('other_field') }}" required>
-        </div>
+            <label for="captain">Captain</label>
+            <input type="text" name="captain" id="captain" class="form-control" value="{{ old('captain') }}" required>
 
-        <!-- Add more fields here as necessary -->
+        </div>
+        <!-- Vice Captain -->   
+        <div class="form-group">
+            <label for="vicecaptain">Vice Captain</label>
+            <input type="text" name="vicecaptain" id="vicecaptain" class="form-control" value="{{ old('vicecaptain') }}" required>
+        </div>
 
         <button type="submit" class="btn btn-primary">Add Team</button>
     </form>

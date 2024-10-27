@@ -11,7 +11,7 @@ class TeamController extends Controller
     /**
      * Display a listing of the seasons.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
 public function edit(Season $season, Team $team)
 {
@@ -45,7 +45,8 @@ public function create(Season $season)
         // Validate the form input
         $request->validate([
             'name' => 'required|string|max:255',
-            'other_field' => 'required|string'  // Add more validation rules as needed
+            'captain' => 'required|string|max:255',
+            'vicecaptain' => 'required|string|max:255',
         ]);
 
         // Create a new team and associate it with the current season

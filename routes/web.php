@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\PlayerController;
 
 
 Route::get('/', function () {
@@ -23,3 +24,8 @@ Route::get('/seasons/{season}/teams/create', [TeamController::class, 'create'])-
 
 // Route to store the new team in the database
 Route::post('/seasons/{season}/teams', [TeamController::class, 'store'])->name('seasons.teams.store');
+
+Route::get('seasons/{season}/players/create', [PlayerController::class, 'create'])->name('seasons.players.create');
+
+// Route to show the form to edit an existing player
+Route::get('seasons/{season}/players/{player}/edit', [PlayerController::class, 'edit'])->name('seasons.players.edit');
