@@ -57,4 +57,15 @@ public function create(Season $season)
                          ->with('success', 'Team added successfully!');
     }
     
+    public function destroy(Season $season, Team $team)
+    {
+        // Delete the team
+        $team->delete();
+
+        // Redirect back to the list of teams for the season with a success message
+        return redirect()->route('seasons.teams', $season->id)
+                         ->with('success', 'Team deleted successfully!');
+    }
+
+
 }

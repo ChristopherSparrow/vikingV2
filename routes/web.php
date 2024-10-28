@@ -7,9 +7,9 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\PlayerController;
 
 
-Route::get('/', function () {
-    return view('viking');
-});
+Route::get('/', [SeasonController::class, 'viking'])->name('viking');
+
+
 
 Auth::routes();
 
@@ -27,5 +27,7 @@ Route::post('/seasons/{season}/teams', [TeamController::class, 'store'])->name('
 
 Route::get('seasons/{season}/players/create', [PlayerController::class, 'create'])->name('seasons.players.create');
 
+Route::post('seasons/{season}/players', [PlayerController::class, 'store'])->name('players.store');
 // Route to show the form to edit an existing player
 Route::get('seasons/{season}/players/{player}/edit', [PlayerController::class, 'edit'])->name('seasons.players.edit');
+Route::delete('/seasons/{season}/teams/{team}', [TeamController::class, 'destroy'])->name('seasons.teams.destroy');

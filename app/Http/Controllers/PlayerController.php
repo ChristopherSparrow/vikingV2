@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Player;
+use App\Models\Season;
 use Illuminate\Http\Request;
 
 class PlayerController extends Controller
@@ -23,9 +24,10 @@ class PlayerController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(Season $season)
     {
-        return view('players.create');
+        $teams = $season->teams; // Fetch teams associated with the season
+        return view('players.create', compact('season', 'teams'));
     }
 
     /**
@@ -38,13 +40,12 @@ class PlayerController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
-            'team' => 'required|string|max:255',
+            'team_id' => 'required|integer|exists:teams,id',
         ]);
 
         Player::create($request->all());
 
-        return redirect()->route('players.index')
+        return redirect()->route('seasons.index')
                          ->with('success', 'Player created successfully.');
     }
 
