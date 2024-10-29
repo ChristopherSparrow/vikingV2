@@ -1,50 +1,69 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container"style="padding-top:10px;">
     <h1>{{ $competition->name }}</h1>
-    <a href="{{ route('games.create', ['season_id' => $competition->season_id, 'competition_id' => $competition->id]) }}" class="btn btn-primary mb-3">Create New Game</a>
+    <p>
+        {{ $competition->season->name }} <br>
+        {{ \Carbon\Carbon::parse($competition->season->start_date)->format('d F Y') }} - {{ \Carbon\Carbon::parse($competition->season->end_date)->format('d F Y') }}
+    </p>
+    <div class="row">
+        @if($competition->type === 'league' || $competition->type === 'team_knockout')
+            @if($teams && $teams->isEmpty())
+                <p class="card-text">No teams found for this competition.</p>
+            @else
+                @foreach($games as $date => $gamesOnDate)
+                <div class="col-lg-4 mb-2">
+                    <div class="card card-viking">
+                        <div class="card-body">
+                            <div class="card-title d-flex justify-content-between align-items-center" style="margin:0px;">
+                                <div class="d-flex align-items-center">{{ \Carbon\Carbon::parse($date)->format('d F Y') }}</div>            
+                            </div>
+                            <table style="width: 100%;">
+                                @foreach($gamesOnDate as $game)
+                                <tr>
 
-    {{ \Carbon\Carbon::parse($competition->season->start_date)->format('d F Y') }} - {{ \Carbon\Carbon::parse($competition->season->end_date)->format('d F Y') }}
-    <br>{{ $competition->season->name }}
-    <div class="card">
-        <div class="card-body">
-            <p class="card-text">
+                                        <td>
+                                            <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px;">
+                                                {{ $game->homeTeam->name }}<br>{{ $game->awayTeam->name }}
+                                            </p>
+                                        </td>
 
-            </p>
-    
-            {{-- Show teams only if the competition is league or team_knockout --}}
-            @if($competition->type === 'league' || $competition->type === 'team_knockout')
-                <h5 class="card-title">Teams Participating</h5>
-                @if($teams && $teams->isEmpty())
-                    <p class="card-text">No teams found for this competition.</p>
-                @else
-                    <ul class="list-group list-group-flush">
-                        @foreach($teams as $team)
-                            <li class="list-group-item">{{ $team->name }} (Captain: {{ $team->captain }}) (Vice Captain: {{ $team->vicecaptain }})</li>
-                        @endforeach
-                    </ul>
-                    <a href="{{ route('competitions.games', $competition->id) }}" class="btn btn-primary">View Games</a>
-                @endif
+                                    @if($competition->type === 'league')
+                                    <td>
+                                        <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: left;">
+                                            <i class="bi bi-info-circle"></i>
+                                        </p>
+                                    </td>
+                                    @endif
+                                    <td>
+                                        <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: right;">
+                                            {{ $game->home_score ?? 0 }}<br>{{ $game->away_score ?? 0 }}
+                                        </p>
+                                    </td>
+                                </tr>
+                            
+                
+                            @endforeach
+                        </table>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             @endif
-        </div>
+        
+        @endif
     </div>
 
-    <a href="{{ route('seasons.index') }}" class="btn btn-primary">Back to Seasons</a>
 
-    <h1>{{ $competition->name }}</h1>
-    <p>{{ $competition->description }}</p>
 
-    <h2>Games</h2>
-    @foreach($games as $date => $gamesOnDate)
-        <h3>{{ $date }}</h3>
-        <ul>
-            @foreach($gamesOnDate as $game)
-                <li>
-                    {{ $game->homeTeam->name }} vs {{ $game->awayTeam->name }} - {{ $game->home_score }}:{{ $game->away_score }}
-                </li>
-            @endforeach
-        </ul>
-    @endforeach
+    <p><a href="/" class="btn btn-primary">Home</a>
+       
+        <a href="{{ route('seasons.index') }}" class="btn btn-primary">Back to Seasons</a>
+        <a href="{{ route('games.create', ['season_id' => $competition->season_id, 'competition_id' => $competition->id]) }}" class="btn btn-primary">Create New Game</a>
+    </p>
+
+
+
 </div>
 @endsection
