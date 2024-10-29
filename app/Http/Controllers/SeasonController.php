@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Season;
 use App\Models\Team;
 use App\Models\Player;
+use App\Models\Game;
+
 use Illuminate\Http\Request;
 
 class SeasonController extends Controller
@@ -19,10 +21,11 @@ class SeasonController extends Controller
         $seasons = Season::all(); // Fetch all seasons from the database
         return view('seasons.index', compact('seasons')); // Pass seasons to the view
     }
-    public function viking(): \Illuminate\Contracts\View\View // Add the type declaration here
+    public function viking(): \Illuminate\Contracts\View\View
     {
         $seasons = Season::all(); // Fetch all seasons from the database
-        return view('viking', compact('seasons')); // Pass seasons to the view
+        $upcomingGames = Game::whereBetween('date', [now(), now()->addDays(7)])->get()->groupBy('date');
+        return view('viking', compact('seasons', 'upcomingGames')); // Pass seasons and upcoming games to the view
     }
     public function showTeams(Season $season)
     {

@@ -5,6 +5,7 @@ use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\GameController;
 
 
 Route::get('/', [SeasonController::class, 'viking'])->name('viking');
@@ -31,3 +32,8 @@ Route::post('seasons/{season}/players', [PlayerController::class, 'store'])->nam
 // Route to show the form to edit an existing player
 Route::get('seasons/{season}/players/{player}/edit', [PlayerController::class, 'edit'])->name('seasons.players.edit');
 Route::delete('/seasons/{season}/teams/{team}', [TeamController::class, 'destroy'])->name('seasons.teams.destroy');
+
+Route::resource('games', GameController::class);
+
+
+Route::get('competitions/{competition}/games', [GameController::class, 'gamesByCompetition'])->name('competitions.games');
