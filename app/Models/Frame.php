@@ -16,6 +16,10 @@ class Frame extends Model
         'frame_number',
         'home_score',
         'away_score',
+        'HomeFirst',
+        'AwayFirst',
+        'Home8',
+        'Away8',
     ];
 
     public function game()

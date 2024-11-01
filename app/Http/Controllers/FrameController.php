@@ -36,7 +36,17 @@ class FrameController extends Controller
             'frame_number' => 'required|integer|min:1|max:12',
             'home_score' => 'nullable|integer',
             'away_score' => 'nullable|integer',
+            'HomeFirst' => 'nullable|boolean',
+            'AwayFirst' => 'nullable|boolean',
+            'Home8' => 'nullable|boolean',
+            'Away8' => 'nullable|boolean',
         ]);
+
+        // Set default values for checkboxes if they are not present in the request
+        $validatedData['HomeFirst'] = $request->has('HomeFirst') ? $request->HomeFirst : null;
+        $validatedData['AwayFirst'] = $request->has('AwayFirst') ? $request->AwayFirst : null;
+        $validatedData['Home8'] = $request->has('Home8') ? $request->Home8 : null;
+        $validatedData['Away8'] = $request->has('Away8') ? $request->Away8 : null;
 
         $frame = Frame::create($validatedData);
         return redirect()->route('games.show', $frame->game_id);

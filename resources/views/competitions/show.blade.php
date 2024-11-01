@@ -9,8 +9,17 @@
         {{ \Carbon\Carbon::parse($competition->season->start_date)->format('d F Y') }} - {{ \Carbon\Carbon::parse($competition->season->end_date)->format('d F Y') }}
     </p>
     <div class="row">
-        <h2>League Table</h2>
-<!-- Create a league table based on the games played in this competition -->
+
+
+
+
+
+
+      
+        
+
+
+
         @if($competition->type === 'league')
             @if($teams && $teams->isEmpty())
                 <p class="card-text">No teams found for this competition.</p>
@@ -18,6 +27,7 @@
                 <div class="col-lg-4 mb-2">
                     <div class="card card-viking">
                         <div class="card-body">
+                              <h2>League Table</h2>
                             <table class="table" style="width:100%;">
                                 <tr>
                                     <td>Team</td>
@@ -71,14 +81,13 @@
             @if($teams && $teams->isEmpty())
                 <p class="card-text">No teams found for this competition.</p>
             @else
-                <h2>Fixtures & Results</h2>
                 @foreach($games as $date => $gamesOnDate)
                 <div class="col-lg-4 mb-2">
                     <div class="card card-viking">
                         <div class="card-body">
-                            <div class="card-title d-flex justify-content-between align-items-center" style="margin:0px;">
-                                <div class="d-flex align-items-center">{{ \Carbon\Carbon::parse($date)->format('d F Y') }}</div>            
-                            </div>
+                            
+                <h2>Fixtures & Results</h2>
+                <p style="padding-top:10px; padding-bottom:10px; margin-bottom:0px; font-size:1.1rem;">{{ \Carbon\Carbon::parse($date)->format('d F Y') }}</p>
                             <table style="width: 100%;">
                                 @foreach($gamesOnDate as $game)
                                 <tr>

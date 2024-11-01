@@ -14,28 +14,35 @@
         @endif
         {{ $game->awayTeam->name }}
     </h1>
-    <p>{{ $game->competition->name }} - {{ $game->date }}</p>
+    <p style="margin:0px;"">{{ $game->competition->name }} - {{ \Carbon\Carbon::parse($game->date)->format('F j, Y') }}</p>
 
     @if($frames->isEmpty())
         <p>No frames found for this game.</p>
     @else
-        <table class="table">
+        <table class="table scores">
             <thead>
-                <tr>
+                <tr style="background-color: #a7b7c7;">
+                    <th><i class="bi bi-1-square"></i></th>
+                    <th></th>
+                    <th><p style="margin:0px; text-align:left;">Home</p></th>
+                    <th colspan="2">&nbsp;</th>
+                    <th><p style="margin:0px; text-align:right;">Away</p></th>
+                    <th></th>
+                    <th><p style="margin:0px; text-align:right;"><i class="bi bi-1-square"></i></p></th>
 
-                    <th colspan="2"><p style="margin:0px;">Home</p></th>
-                    <th colspan="2"><p style="margin:0px; text-align:right;">Away</p></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($frames as $frame)
                 <tr>
-
-                    <td>{{ $frame->homePlayer->name }}</td>
+                    <td>@if($frame->HomeFirst == 1)<p style="margin:0px; text-align:left;"><i class="bi bi-dot"></i></p>@endif</td>
+                    <td>@if($frame->Home8 == 1)<p style="margin:0px; text-align:left;"><i class="bi bi-8-circle-fill"></i></p>@endif</td>
+                    <td><p style="margin:0px; text-align:left;">{{ $frame->homePlayer->name }}</p></td>
                     <td>{{ $frame->home_score }}</td>
                     <td>{{ $frame->away_score }}</td>
                     <td ><p style="margin:0px; text-align:right;">{{ $frame->awayPlayer->name }}</p></td>
-
+                    <td>@if($frame->Away8 == 1)<p style="margin:0px; text-align:right;"><i class="bi bi-8-circle-fill"></i>@endif</p></td>
+                    <td>@if($frame->AwayFirst == 1)<p style="margin:0px; text-align:right;"><i class="bi bi-dot"></i>@endif</p></td>
                 </tr>
                 @endforeach
             </tbody>
@@ -46,15 +53,30 @@
     <form action="{{ route('frames.store') }}" method="POST">
         @csrf
         <input type="hidden" name="game_id" value="{{ $game->id }}">
-        <div class="form-group">
-            <label for="home_player_id">Home Player</label>
-            <select name="home_player_id" class="form-control" required>
-            <option value="" disabled selected>Home Player</option>
-            @foreach($game->homeTeam->players as $player)
-                <option value="{{ $player->id }}">{{ $player->name }}</option>
-            @endforeach
-            </select>
+        <div class="card mb-3">
+
+            <div class="card-body">
+                <div class="form-group">
+                    <select name="home_player_id" class="form-control" required>
+                        <option value="" disabled selected>Home Player</option>
+                        @foreach($game->homeTeam->players as $player)
+                            <option value="{{ $player->id }}">{{ $player->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group d-flex justify-content-between">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="HomeFirst" name="HomeFirst" value="1">
+                        <label class="form-check-label" for="HomeFirst">First Game?</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="Home8" name="Home8" value="1">
+                        <label class="form-check-label" for="Home8">Eight Ball Clearance?</label>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <div class="form-group">
             <label for="away_player_id">Away Player</label>
@@ -73,7 +95,7 @@
         <div class="form-group">
             <label for="winner">Winner</label>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-secondary active">
+                <label class="btn btn-secondary ">
                     <input type="radio" name="winner" id="home" autocomplete="off" value="home" checked> Home
                 </label>
                 <label class="btn btn-secondary">
@@ -98,6 +120,17 @@
                 });
             });
         </script>
+
+
+<div class="form-group">
+    <label for="AwayFirst">Away First</label>
+    <input type="checkbox" name="AwayFirst" value="1" class="form-control">
+</div>
+
+<div class="form-group">
+    <label for="Away8">Away 8</label>
+    <input type="checkbox" name="Away8" value="1" class="form-control">
+</div>
         <button type="submit" class="btn btn-primary">Add Frame</button>
     </form>
 </div>

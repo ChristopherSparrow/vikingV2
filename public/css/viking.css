@@ -35,3 +35,9 @@
     line-height: 1.5;
 }
 
+.scores td{
+    padding:2px;
+}
+.scores th{
+    padding:2px;
+}
