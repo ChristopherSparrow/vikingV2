@@ -6,6 +6,7 @@ use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\FrameController;
 
 
 Route::get('/', [SeasonController::class, 'viking'])->name('viking');
@@ -37,3 +38,5 @@ Route::resource('games', GameController::class);
 
 
 Route::get('competitions/{competition}/games', [GameController::class, 'gamesByCompetition'])->name('competitions.games');
+
+Route::apiResource('frames', FrameController::class);

@@ -10,7 +10,7 @@
 @endphp
 <div class="container" style="padding-top:10px;">
     @if($latestSeason)
-        <h1>the Viking Pool League</h1>
+        <h1>the <strong>Viking Pool League</strong></h1>
             <div class="row">
                 <div class="col-lg-4 mb-2">
                     <div class="card card-viking">

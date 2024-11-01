@@ -92,7 +92,9 @@
                                     @if($competition->type === 'league')
                                     <td>
                                         <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: left;">
-                                            <i class="bi bi-info-circle"></i>
+                                            <a href="{{ route('games.show', ['game' => $game->id]) }}">
+                                                <i class="bi bi-info-circle"></i>
+                                            </a>
                                         </p>
                                     </td>
                                     @endif

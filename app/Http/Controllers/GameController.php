@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\Frame;
 use App\Models\Team;
 use App\Models\Season;
 use App\Models\Competition;
@@ -55,7 +56,8 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        return view('games.show', compact('game'));
+        $frames = Frame::where('game_id', $game->id)->orderBy('frame_number')->get();
+        return view('games.show', compact('game', 'frames'));
     }
 
     /**
