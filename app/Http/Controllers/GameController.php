@@ -60,6 +60,15 @@ class GameController extends Controller
         return view('games.show', compact('game', 'frames'));
     }
 
+    public function mostwins(Competition $competition)
+    {
+        $frames = Frame::whereHas('game', function ($query) use ($competition) {
+            $query->where('competition_id', $competition->id);
+        })->orderBy('game_id')->orderBy('frame_number')->get();
+        
+        return view('competitions.mostwins', compact('frames'));
+    }
+
     /**
      * Show the form for editing the specified game.
      */

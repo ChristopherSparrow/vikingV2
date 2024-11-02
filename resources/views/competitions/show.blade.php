@@ -10,7 +10,17 @@
     </p>
     <div class="row">
 
+        @if($competition->type === 'league')
+            @if($teams && $teams->isEmpty())
+                <p class="card-text">No teams found for this competition.</p>
+            @else
+            <!--Add a link to the mostwins page-->
+            <p><a href="{{ route('games.mostwins', ['competition' => $competition->id]) }}" class="btn btn-primary">Most Wins</a>   </p>
 
+
+            @endif
+        @endif
+     
 
 
 
