@@ -53,8 +53,7 @@
     <form action="{{ route('frames.store') }}" method="POST">
         @csrf
         <input type="hidden" name="game_id" value="{{ $game->id }}">
-        <div class="card mb-3">
-
+        <div class="col-lg-4 mb-2">
             <div class="card-body">
                 <div class="form-group">
                     <select name="home_player_id" class="form-control" required>
@@ -77,33 +76,51 @@
             </div>
         </div>
 
-
-        <div class="form-group">
-            <label for="away_player_id">Away Player</label>
-            <select name="away_player_id" class="form-control" required>
-                <option value="" disabled selected>Away Player</option>
-                @foreach($game->awayTeam->players as $player)
-                    <option value="{{ $player->id }}">{{ $player->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="frame_number">Frame Number</label>
-            <input type="number" name="frame_number" class="form-control" required min="1" max="12" value="{{ $frames->count() + 1 }}" readonly>
-        </div>
-
-        <div class="form-group">
-            <label for="winner">Winner</label>
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-secondary ">
-                    <input type="radio" name="winner" id="home" autocomplete="off" value="home" checked> Home
-                </label>
-                <label class="btn btn-secondary">
-                    <input type="radio" name="winner" id="away" autocomplete="off" value="away"> Away
-                </label>
+        <div class="col-lg-4 mb-2">
+            <div class="card-body">
+                <div class="form-group">
+                    <select name="away_player_id" class="form-control" required>
+                        <option value="" disabled selected>Away Player</option>
+                        @foreach($game->awayTeam->players as $player)
+                            <option value="{{ $player->id }}">{{ $player->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group d-flex justify-content-between">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="AwayFirst" name="AwayFirst" value="1">
+                        <label class="form-check-label" for="AwayFirst">First Game?</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="Away8" name="Away8" value="1">
+                        <label class="form-check-label" for="Away8">Eight Ball Clearance?</label>
+                    </div>
+                </div>
             </div>
         </div>
 
+
+  
+        <div class="form-group">
+           <!-- <label for="frame_number">Frame Number</label> -->
+            <input type="hidden" name="frame_number" class="form-control" required min="1" max="12" value="{{ $frames->count() + 1 }}" readonly>
+        </div>
+
+        <div class="col-lg-4 mb-2">
+            <div class="card-body">
+            <div class="form-group">
+                <label for="winner">Winner</label>
+                <div class="btn-group btn-group-toggle d-flex justify-content-between" data-toggle="buttons">
+                <label class="btn btn-secondary flex-fill">
+                    <input type="radio" name="winner" id="home" autocomplete="off" value="home" checked> Home
+                </label>
+                <label class="btn btn-secondary flex-fill">
+                    <input type="radio" name="winner" id="away" autocomplete="off" value="away"> Away
+                </label>
+                </div>
+            </div>
+            </div>
+        </div>
         <input type="hidden" name="home_score" id="home_score" value="1">
         <input type="hidden" name="away_score" id="away_score" value="0">
 
@@ -122,16 +139,8 @@
         </script>
 
 
-<div class="form-group">
-    <label for="AwayFirst">Away First</label>
-    <input type="checkbox" name="AwayFirst" value="1" class="form-control">
-</div>
 
-<div class="form-group">
-    <label for="Away8">Away 8</label>
-    <input type="checkbox" name="Away8" value="1" class="form-control">
-</div>
-        <button type="submit" class="btn btn-primary">Add Frame</button>
+       <p> <button type="submit" class="btn btn-primary">Add Frame</button> </p>
     </form>
 </div>
 @endsection
