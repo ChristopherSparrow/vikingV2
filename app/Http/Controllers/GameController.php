@@ -65,10 +65,18 @@ class GameController extends Controller
         $frames = Frame::whereHas('game', function ($query) use ($competition) {
             $query->where('competition_id', $competition->id);
         })->orderBy('game_id')->orderBy('frame_number')->get();
-        
-        return view('competitions.mostwins', compact('frames'));
+        $competitions = Competition::all();
+        return view('competitions.mostwins', compact('frames', 'competition'));
     }
 
+    public function totalclearances(Competition $competition)
+    {
+        $frames = Frame::whereHas('game', function ($query) use ($competition) {
+            $query->where('competition_id', $competition->id);
+        })->orderBy('game_id')->orderBy('frame_number')->get();
+        $competitions = Competition::all();
+        return view('competitions.totalclearances', compact('frames', 'competition'));
+    }
     /**
      * Show the form for editing the specified game.
      */

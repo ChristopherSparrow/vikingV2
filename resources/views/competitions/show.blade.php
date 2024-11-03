@@ -15,9 +15,8 @@
                 <p class="card-text">No teams found for this competition.</p>
             @else
             <!--Add a link to the mostwins page-->
-            <p><a href="{{ route('games.mostwins', ['competition' => $competition->id]) }}" class="btn btn-primary">Most Wins</a>   </p>
-
-
+            <p><a href="{{ route('games.mostwins', ['competition' => $competition->id]) }}" class="btn btn-primary">Most Wins</a>   
+            <a href="{{ route('games.totalclearances', ['competition' => $competition->id]) }}" class="btn btn-primary">Eight Ball Clearnances</a>   </p>
             @endif
         @endif
      

@@ -6,7 +6,7 @@
     <p style="margin:0px;">
         <a href="{{ route('competitions.show', $competition->id) }}"> &lt; Back</a>
     </p>
-    <h1>{{ $competition->name }} Most Wins</h1>
+    <h1>{{ $competition->name }} Total Clearances</h1>
     <p>
         {{ $competition->season->name }} <br>
         {{ \Carbon\Carbon::parse($competition->season->start_date)->format('d F Y') }} - {{ \Carbon\Carbon::parse($competition->season->end_date)->format('d F Y') }}
@@ -27,39 +27,36 @@
 <div class="col-lg-4 mb-2">
     <div class="card card-viking">
         <div class="card-body">
-            <h2>Most Wins Competition</h2>
+            <h2>Total Clearances Competition</h2>
     <table class="display">
         <thead>
             <tr>
                 <th>Player</th>
 
-                <th>Played First</th>
-                <th>Won First</th>
+                <th>Played</th>
+                <th>Eight Balls</th>
             </tr>
         </thead>
         <tbody>
         @foreach($players as $player)
             <?php
-                $firstGamesPlayed = 0;
-                foreach($frames as $frame){
-                    if(
-                        ($frame->homeplayer->id == $player->id && $frame->HomeFirst == 1) || 
-                        ($frame->awayplayer->id == $player->id && $frame->AwayFirst == 1)
-                    ){
-                        $firstGamesPlayed++;
-                    }
+            $played = 0;
+            foreach($frames as $frame){
+                if($frame->homeplayer->id == $player->id || $frame->awayplayer->id == $player->id){
+                    $played++;
                 }
+            }
             ?>
             <?php
                 $firstwins = 0;
                 foreach($frames as $frame){
                     if($frame->homeplayer->id == $player->id){
-                        if($frame->home_score > $frame->away_score && $frame->HomeFirst == 1){
+                        if($frame->home_score > $frame->away_score && $frame->Home8 == 1){
                             $firstwins++;
                         }
                     }
                     if($frame->awayplayer->id == $player->id){
-                        if($frame->away_score > $frame->home_score && $frame->AwayFirst == 1){
+                        if($frame->away_score > $frame->home_score && $frame->Away8 == 1){
                             $firstwins++;
                         }
                     }
@@ -68,7 +65,7 @@
 
             <tr>
                 <td>{{$player->name}}</td>
-                <td>{{$firstGamesPlayed}}</td>
+                <td>{{$played}}</td>
                 <td>{{$firstwins}}</td>
             </tr>
         @endforeach
@@ -91,14 +88,7 @@
         <tbody>
         @foreach($players as $player)
 
-            <?php
-                $played = 0;
-                foreach($frames as $frame){
-                    if($frame->homeplayer->id == $player->id || $frame->awayplayer->id == $player->id){
-                        $played++;
-                    }
-                }
-            ?>
+
 
             <?php
                 $wins = 0;

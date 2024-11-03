@@ -36,6 +36,7 @@ Route::delete('/seasons/{season}/teams/{team}', [TeamController::class, 'destroy
 
 Route::resource('games', GameController::class);
 Route::get('mostwins/{competition}', [GameController::class, 'mostwins'])->name('games.mostwins');
+Route::get('totalclearances/{competition}', [GameController::class, 'totalclearances'])->name('games.totalclearances');
 
 
 Route::get('competitions/{competition}/games', [GameController::class, 'gamesByCompetition'])->name('competitions.games');
