@@ -106,12 +106,14 @@
 					    <div class="card-title d-flex justify-content-between align-items-center" style="margin:0px;">
 						    <div class="d-flex align-items-center"><strong>Results & Fixtures</strong></div>            
                         </div>
-        @foreach($upcomingGames as $date => $gamesOnDate)
+                        @foreach($upcomingGames as $date => $gamesOnDate)
+                        
+
                         <table style="width: 100%;">
                             <tr>
                                 <td colspsan="2">
                                     <p style="padding-top:10px; padding-bottom:10px; margin-bottom:0px; font-size:1.1rem;">
-                                        <a style="color:#ffffff;" href="{{ url('competitions/' . $gamesOnDate->first()->competition->id) }}">{{ $gamesOnDate->first()->competition->name }}</a>: {{ \Carbon\Carbon::parse($date)->format('d F Y') }}
+                                        <a style="color:#ffffff;" href="{{ url('competitions/' . $gamesOnDate->sortBy('date')->first()->competition->id) }}">{{ $gamesOnDate->sortBy('date')->first()->competition->name }}</a>: {{ \Carbon\Carbon::parse($date)->format('d F Y') }}
                                     </p>
                                 </td>
                             </tr>

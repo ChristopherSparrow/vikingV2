@@ -24,7 +24,10 @@ class SeasonController extends Controller
     public function viking(): \Illuminate\Contracts\View\View
     {
         $seasons = Season::all(); // Fetch all seasons from the database
-        $upcomingGames = Game::whereBetween('date', [now()->subDays(7), now()->addDays(7)])->get()->groupBy('date');
+        $upcomingGames = Game::whereBetween('date', [now()->subDays(7), now()->addDays(7)])
+            ->orderBy('date', 'asc')
+            ->get()
+            ->groupBy('date');
         return view('viking', compact('seasons', 'upcomingGames')); // Pass seasons and upcoming games to the view
     }
     public function showTeams(Season $season)
