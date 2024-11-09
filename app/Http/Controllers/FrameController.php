@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Frame;
+use App\Models\Player;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+
 
 class FrameController extends Controller
 {
@@ -63,28 +66,64 @@ class FrameController extends Controller
     /**
      * Show the form for editing the specified frame.
      */
+    
+    
     public function edit(Frame $frame)
     {
-        return view('frames.edit', compact('frame'));
+        $players = Player::all(); // Assuming you have a Player model
+        return view('frames.edit', compact('frame', 'players'));
     }
 
     /**
      * Update the specified frame in storage.
      */
-    public function update(Request $request, Frame $frame)
-    {
-        $validatedData = $request->validate([
-            'game_id' => 'required|exists:games,id',
-            'home_player_id' => 'required|exists:players,id',
-            'away_player_id' => 'required|exists:players,id',
-            'frame_number' => 'required|integer|min:1|max:12',
-            'home_score' => 'nullable|integer',
-            'away_score' => 'nullable|integer',
-        ]);
+  
+     public function update(Request $request, Frame $frame)
+     {
+        try {
+             // Convert checkbox values to boolean
+             $request->merge([
+                 'HomeFirst' => $request->input('HomeFirst', false),
+                 'Home8' => $request->input('Home8', false),
+                 'AwayFirst' => $request->input('AwayFirst', false),
+                 'Away8' => $request->input('Away8', false),
+             ]);
+ 
+             // Validate the request data
+             $validatedData = $request->validate([
+                 'home_player_id' => 'required|exists:players,id',
+                 'away_player_id' => 'required|exists:players,id',
+                 'home_score' => 'required|integer',
+                 'away_score' => 'required|integer',
+                 'HomeFirst' => 'required|boolean',
+                 'Home8' => 'required|boolean',
+                 'AwayFirst' => 'required|boolean',
+                 'Away8' => 'required|boolean',
+             ]);
+ 
+             // Update the frame with the validated data
+             $frame->home_player_id = $validatedData['home_player_id'];
+             $frame->away_player_id = $validatedData['away_player_id'];
+             $frame->home_score = $validatedData['home_score'];
+             $frame->away_score = $validatedData['away_score'];
+             $frame->HomeFirst = $validatedData['HomeFirst'];
+             $frame->Home8 = $validatedData['Home8'];
+             $frame->AwayFirst = $validatedData['AwayFirst'];
+             $frame->Away8 = $validatedData['Away8'];
+ 
+             $frame->save();
+ 
+             // Redirect back to the games.show view
+             return redirect()->route('games.show', $frame->game_id)->with('success', 'Frame updated successfully.');
+ 
+         } catch (ValidationException $e) {
 
-        $frame->update($validatedData);
-        return redirect()->route('frames.index');
-    }
+             return redirect()->back()->withErrors($e->errors())->withInput();
+         } catch (\Exception $e) {
+
+             return redirect()->back()->with('error', 'An error occurred while updating the frame.')->withInput();
+         }
+     }
 
     /**
      * Remove the specified frame from storage.

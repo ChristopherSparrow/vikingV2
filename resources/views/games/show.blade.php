@@ -29,6 +29,7 @@
                     <th><p style="margin:0px; text-align:right;">Away</p></th>
                     <th></th>
                     <th><p style="margin:0px; text-align:right;"><i class="bi bi-1-square"></i></p></th>
+                    <th></th>
 
                 </tr>
             </thead>
@@ -43,6 +44,8 @@
                     <td ><p style="margin:0px; text-align:right;">{{ $frame->awayPlayer->name }}</p></td>
                     <td>@if($frame->Away8 == 1)<p style="margin:0px; text-align:right;"><i class="bi bi-8-circle-fill"></i>@endif</p></td>
                     <td>@if($frame->AwayFirst == 1)<p style="margin:0px; text-align:right;"><i class="bi bi-dot"></i>@endif</p></td>
+                    <td><a href="{{ route('frames.edit', $frame->id) }}"><i class="bi bi-pencil-square"></i></a></td>
+
                 </tr>
                 @endforeach
             </tbody>

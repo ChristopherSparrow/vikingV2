@@ -41,4 +41,9 @@ Route::get('totalclearances/{competition}', [GameController::class, 'totalcleara
 
 Route::get('competitions/{competition}/games', [GameController::class, 'gamesByCompetition'])->name('competitions.games');
 
-Route::apiResource('frames', FrameController::class);
+
+Route::resource('frames', FrameController::class);
+
+Route::get('frames/{frame}/edit', [FrameController::class, 'edit'])->name('frames.edit');
+
+Route::put('frames/{frame}', [FrameController::class, 'update'])->name('frames.update');
