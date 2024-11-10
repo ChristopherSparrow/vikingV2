@@ -24,11 +24,13 @@ class SeasonController extends Controller
     public function viking(): \Illuminate\Contracts\View\View
     {
         $seasons = Season::all(); // Fetch all seasons from the database
+        $latestSeason = $seasons->where('status', 'active')->sortByDesc('start_date')->first(); // Get the active season with the latest start_date
+        $teams = Team::where('season_id', $latestSeason->id)->get(); // Fetch teams from the latest active season
         $upcomingGames = Game::whereBetween('date', [now()->subDays(7), now()->addDays(7)])
             ->orderBy('date', 'asc')
             ->get()
             ->groupBy('date');
-        return view('viking', compact('seasons', 'upcomingGames')); // Pass seasons and upcoming games to the view
+        return view('viking', compact('seasons', 'upcomingGames',"teams")); // Pass seasons and upcoming games to the view
     }
     public function showTeams(Season $season)
     {

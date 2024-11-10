@@ -38,10 +38,14 @@
                     <div class="card card-viking">
                         <div class="card-body">
                             <h2>League Table</h2>
+
 <!-- Create a league table of the games for the latestseason -->
+
                             @if($teams && $teams->isEmpty())
                                 <p>No teams found for this competition.</p>
                             @else
+
+         
                                 <table class="table" style="width:100%;">
                                     <tr>
                                         <td>Team</td>
@@ -53,7 +57,7 @@
                                     </tr>
                                     @foreach($teams as $team)
                                     @php
-                                        $played = $team->games->where('season_id', $latestSeason->id)->count();
+                                        $played = $team->games->where('season_id', $latestSeason->id)->where('competition_id', 1)->count();
                                         $won = $team->games->filter(function($game) use ($team, $latestSeason) {
                                             return $game->season_id == $latestSeason->id && (
                                                 ($game->home_team_id == $team->id && $game->home_score > $game->away_score) ||
@@ -84,6 +88,7 @@
                                     @endforeach
                                 </table>
                             @endif
+
                         </div>
                     </div>
                 </div>
