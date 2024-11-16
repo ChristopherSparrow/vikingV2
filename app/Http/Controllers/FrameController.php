@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Frame;
+use App\Models\Game;
+use App\Models\Team;
 use App\Models\Player;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -45,6 +47,17 @@ class FrameController extends Controller
             'Away8' => 'nullable|boolean',
         ]);
 
+        $game = Game::findOrFail($validatedData['game_id']);
+  // Check if the home player belongs to the home team
+  if (!$game->homeTeam->players->contains($validatedData['home_player_id'])) {
+    return redirect()->back()->withErrors(['home_player_id' => 'The selected home player does not belong to the home team.'])->withInput();
+}
+
+// Check if the away player belongs to the away team
+if (!$game->awayTeam->players->contains($validatedData['away_player_id'])) {
+    return redirect()->back()->withErrors(['away_player_id' => 'The selected away player does not belong to the away team.'])->withInput();
+}
+
         // Set default values for checkboxes if they are not present in the request
         $validatedData['HomeFirst'] = $request->has('HomeFirst') ? $request->HomeFirst : null;
         $validatedData['AwayFirst'] = $request->has('AwayFirst') ? $request->AwayFirst : null;
@@ -68,11 +81,13 @@ class FrameController extends Controller
      */
     
     
-    public function edit(Frame $frame)
-    {
-        $players = Player::all(); // Assuming you have a Player model
-        return view('frames.edit', compact('frame', 'players'));
-    }
+     public function edit(Frame $frame)
+     {
+         $homeTeamPlayers = $frame->game->homeTeam->players;
+         $awayTeamPlayers = $frame->game->awayTeam->players;
+         $teams = Team::all();
+         return view('frames.edit', compact('frame', 'homeTeamPlayers', 'awayTeamPlayers', 'teams'));
+     }
 
     /**
      * Update the specified frame in storage.
@@ -101,6 +116,17 @@ class FrameController extends Controller
                  'Away8' => 'required|boolean',
              ]);
  
+             $game = $frame->game;
+
+             // Check if the home player belongs to the home team
+             if (!$game->homeTeam->players->contains($validatedData['home_player_id'])) {
+                 return redirect()->back()->withErrors(['home_player_id' => 'The selected home player does not belong to the home team.'])->withInput();
+             }
+     
+             // Check if the away player belongs to the away team
+             if (!$game->awayTeam->players->contains($validatedData['away_player_id'])) {
+                 return redirect()->back()->withErrors(['away_player_id' => 'The selected away player does not belong to the away team.'])->withInput();
+             }
              // Update the frame with the validated data
              $frame->home_player_id = $validatedData['home_player_id'];
              $frame->away_player_id = $validatedData['away_player_id'];
