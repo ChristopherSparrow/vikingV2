@@ -126,7 +126,10 @@
                          @foreach($gamesOnDate as $game)
                             <tr>
                                 <td>
-                                    <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px;">{{ $game->homeTeam->name }}<br>{{ $game->awayTeam->name }}</p>
+                                    <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px;">
+                                        {{ $game->homeTeam->name ?? $game->homePlayer->name ?? 'N/A' }}<br>
+                                        {{ $game->awayTeam->name ?? $game->awayPlayer->name ?? 'N/A' }}
+                                    </p>
                                 </td>
                                 <td>
                                     <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: right;">{{ $game->home_score }}<br>{{ $game->away_score }}</p>

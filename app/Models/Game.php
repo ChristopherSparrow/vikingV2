@@ -17,6 +17,8 @@ class Game extends Model
         'date',
         'home_score',
         'away_score',
+        'home_player_id',
+        'away_player_id',
     ];
 
     /**
@@ -50,4 +52,19 @@ class Game extends Model
     {
         return $this->belongsTo(Team::class, 'away_team_id');
     }
+
+    public function homePlayer()
+    {
+        return $this->belongsTo(Player::class, 'home_player_id');
+    }
+
+    /**
+     * Get the away team of the game.
+     */
+    public function awayPlayer()
+    {
+        return $this->belongsTo(Player::class, 'away_player_id');
+    }
+
+
 }
