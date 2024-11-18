@@ -7,6 +7,7 @@ use App\Models\Frame;
 use App\Models\Team;
 use App\Models\Season;
 use App\Models\Competition;
+use App\Models\Player;
 use Illuminate\Http\Request;
 
 class GameController extends Controller
@@ -23,12 +24,16 @@ class GameController extends Controller
     /**
      * Show the form for creating a new game.
      */
-    public function create()
+    public function create($season_id, $competition_id)
     {
         $teams = Team::all();
         $seasons = Season::all();
         $competitions = Competition::all();
-        return view('games.create', compact('teams', 'seasons', 'competitions'));
+        $players = Player::all();
+
+        
+
+        return view('games.create', compact('teams', 'seasons', 'competitions','players'));
     }
 
     /**
@@ -39,16 +44,24 @@ class GameController extends Controller
         $request->validate([
             'season_id' => 'required|exists:seasons,id',
             'competition_id' => 'required|exists:competitions,id',
-            'home_team_id' => 'required|exists:teams,id',
-            'away_team_id' => 'required|exists:teams,id',
+            'home_team_id' => 'nullable|exists:teams,id',
+            'away_team_id' => 'nullable|exists:teams,id',
             'date' => 'required|date',
             'home_score' => 'nullable|integer',
             'away_score' => 'nullable|integer',
+            'home_player_id' => 'nullable|exists:players,id',
+            'away_player_id' => 'nullable|exists:players,id',
+            'competition_round_id' => 'nullable|string', // Add this line
+   
         ]);
 
-        Game::create($request->all());
+        \Log::info('Request data: ', $request->all());
 
-        return redirect()->route('games.index')->with('success', 'Game created successfully.');
+        
+            $game = Game::create($request->all());
+            
+            return redirect()->route('competitions.show', ['competition' => $game->competition_id])->with('success', 'Game created successfully.');
+          
     }
 
     /**

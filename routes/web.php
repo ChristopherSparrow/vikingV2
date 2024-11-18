@@ -47,3 +47,4 @@ Route::resource('frames', FrameController::class);
 Route::get('frames/{frame}/edit', [FrameController::class, 'edit'])->name('frames.edit');
 
 Route::put('frames/{frame}', [FrameController::class, 'update'])->name('frames.update');
+Route::get('/games/create/{season_id}/{competition_id}', [GameController::class, 'create'])->name('games.create');

@@ -118,7 +118,9 @@
                             <tr>
                                 <td colspsan="2">
                                     <p style="padding-top:10px; padding-bottom:10px; margin-bottom:0px; font-size:1.1rem;">
-                                        <a style="color:#ffffff;" href="{{ url('competitions/' . $gamesOnDate->sortBy('date')->first()->competition->id) }}">{{ $gamesOnDate->sortBy('date')->first()->competition->name }}</a>: {{ \Carbon\Carbon::parse($date)->format('d F Y') }}
+                                        <a style="color:#ffffff;" href="{{ url('competitions/' . $gamesOnDate->sortBy('date')->first()->competition->id) }}">
+                                            {{ $gamesOnDate->sortBy('date')->first()->competition->name ?? 'N/A' }}{{ $gamesOnDate->sortBy('date')->first()->competition_round_id ? ', ' . $gamesOnDate->sortBy('date')->first()->competition_round_id : '' }} <br> {{ \Carbon\Carbon::parse($date)->format('d F Y') }}</a>
+                                        
                                     </p>
                                 </td>
                             </tr>

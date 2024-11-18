@@ -19,14 +19,6 @@
             <a href="{{ route('games.totalclearances', ['competition' => $competition->id]) }}" class="btn btn-primary">Eight Ball Clearnances</a>   </p>
             @endif
         @endif
-     
-
-
-
-
-      
-        
-
 
 
         @if($competition->type === 'league')
@@ -133,6 +125,56 @@
             @endif
         
         @endif
+
+        @if($competition->type === 'singles')
+        @if($players && $players->isEmpty())
+            <p class="card-text">No players found for this competition.</p>
+        @else
+            @foreach($games as $date => $gamesOnDate)
+            <div class="col-lg-4 mb-2">
+                <div class="card card-viking">
+                    <div class="card-body">
+                        
+            <h2>Fixtures & Results</h2>
+            <p style="padding-top:10px; padding-bottom:10px; margin-bottom:0px; font-size:1.1rem;">
+                {{ \Carbon\Carbon::parse($date)->format('d F Y') }} -  {{ $gamesOnDate->first()->competition_round_id }}
+            </p>
+                        <table style="width: 100%;">
+                            @foreach($gamesOnDate as $game)
+                            <tr>
+
+                                    <td>
+                                        <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px;">
+                                            {{ $game->homePlayer->name }}<br>{{ $game->awayPlayer->name }}
+                                        </p>
+                                    </td>
+
+                                @if($competition->type === 'league')
+                                <td>
+                                    <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: left; font-size:1.5rem;">
+                                        <a style="color:#ffffff;" href="{{ route('games.show', ['game' => $game->id]) }}">
+                                            <i class="bi bi-info-circle"></i>
+                                        </a>
+                                    </p>
+                                </td>
+                                @endif
+                                <td>
+                                    <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: right;">
+                                        {{ $game->home_score ?? 0 }}<br>{{ $game->away_score ?? 0 }}
+                                    </p>
+                                </td>
+                            </tr>
+                        
+            
+                        @endforeach
+                    </table>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        @endif
+    
+    @endif
     </div>
 
 
@@ -140,7 +182,7 @@
     <p><a href="/" class="btn btn-primary">Home</a>
        
         <a href="{{ route('seasons.index') }}" class="btn btn-primary">Back to Seasons</a>
-        <a href="{{ route('games.create', ['season_id' => $competition->season_id, 'competition_id' => $competition->id]) }}" class="btn btn-primary">Create New Game</a>
+        <a href="{{ route('games.create', ['season_id' => $competition->season->id, 'competition_id' => $competition->id]) }}" class="btn btn-primary">Create Game</a>
     </p>
 
 
