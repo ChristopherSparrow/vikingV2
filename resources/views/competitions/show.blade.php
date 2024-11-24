@@ -38,10 +38,23 @@
                                     <td>Lost</td>
                                     <td style="text-align: right;">Points</td>
                                 </tr>
+  
+                                @php
+                                    $teams = $teams->sortByDesc(function($team) use ($competition) {
+                                        return $team->games->where('competition_id', $competition->id)->sum(function($game) use ($team) {
+                                            if ($game->home_team_id == $team->id) {
+                                                return $game->home_score;
+                                            } elseif ($game->away_team_id == $team->id) {
+                                                return $game->away_score;
+                                            }
+                                            return 0;
+                                        });
+                                    });
+                                @endphp
+
                                 @foreach($teams as $team)
                                 @php
                                     $played = $team->games->where('competition_id', $competition->id)->count();
-                                 
                                     $won = $team->games->filter(function($game) use ($team, $competition) {
                                         return $game->competition_id == $competition->id && (
                                             ($game->home_team_id == $team->id && $game->home_score > $game->away_score) ||
@@ -60,7 +73,6 @@
                                         }
                                         return 0;
                                     });
-                                
                                 @endphp
                                 <tr>
                                     <td>{{ $team->name }}</td>
@@ -70,6 +82,7 @@
                                     <td>{{ $lost }}</td>
                                     <td style="text-align: right;">{{ $points }}</td>
                                 </tr>
+
                                 @endforeach
                             </table>
                         </div>
@@ -80,50 +93,54 @@
 
         @if($competition->type === 'league' || $competition->type === 'team_knockout')
             @if($teams && $teams->isEmpty())
-                <p class="card-text">No teams found for this competition.</p>
+            <p class="card-text">No teams found for this competition.</p>
             @else
-                @foreach($games as $date => $gamesOnDate)
-                <div class="col-lg-4 mb-2">
-                    <div class="card card-viking">
-                        <div class="card-body">
-                            
-                <h2>Fixtures & Results</h2>
-                <p style="padding-top:10px; padding-bottom:10px; margin-bottom:0px; font-size:1.1rem;">{{ \Carbon\Carbon::parse($date)->format('d F Y') }}</p>
-                            <table style="width: 100%;">
-                                @foreach($gamesOnDate as $game)
-                                <tr>
-
-                                        <td>
-                                            <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px;">
-                                                {{ $game->homeTeam->name }}<br>{{ $game->awayTeam->name }}
-                                            </p>
-                                        </td>
-
+            <div class="col-lg-4 mb-2">
+                <div class="card card-viking">
+                    <div class="card-body">
+                        <h2>Fixtures & Results</h2>
+                        <div class="accordion" id="fixturesAccordion">
+                            @foreach($games as $date => $gamesOnDate)
+                            <div class="accordion-item accordian-button-viking">
+                            <h2 class="accordion-header accordian-button-viking" id="heading-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}">
+                                <button class="accordion-button accordian-button-viking" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}" aria-expanded="true" aria-controls="collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}">
+                                {{ \Carbon\Carbon::parse($date)->format('d F Y') }}
+                                </button>
+                            </h2>
+                            <div id="collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}" class="accordion-collapse accordian-button-viking collapse" aria-labelledby="heading-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}" data-bs-parent="#fixturesAccordion">
+                                <div class="accordion-body accordian-viking">
+                                <table style="width: 100%;">
+                                    @foreach($gamesOnDate as $game)
+                                    <tr>
+                                    <td>
+                                        <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px;">
+                                        {{ $game->homeTeam->name }}<br>{{ $game->awayTeam->name }}
+                                        </p>
+                                    </td>
                                     @if($competition->type === 'league')
                                     <td>
                                         <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: left; font-size:1.5rem;">
-                                            <a style="color:#ffffff;" href="{{ route('games.show', ['game' => $game->id]) }}">
-                                                <i class="bi bi-info-circle"></i>
-                                            </a>
+                                        <a style="color:#ffffff;" href="{{ route('games.show', ['game' => $game->id]) }}">
+                                            <i class="bi bi-info-circle"></i>
+                                        </a>
                                         </p>
                                     </td>
                                     @endif
                                     <td>
                                         <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: right;">
-                                            {{ $game->home_score ?? 0 }}<br>{{ $game->away_score ?? 0 }}
+                                        {{ $game->home_score ?? 0 }}<br>{{ $game->away_score ?? 0 }}
                                         </p>
                                     </td>
-                                </tr>
-                            
-                
+                                    </tr>
+                                    @endforeach
+                                </table>
+                                </div>
+                            </div>
+                            </div>
                             @endforeach
-                        </table>
                         </div>
-                    </div>
-                </div>
-                @endforeach
+                    </div></div></div>
             @endif
-        
         @endif
 
         @if($competition->type === 'singles')
@@ -135,7 +152,7 @@
                 <div class="card card-viking">
                     <div class="card-body">
                         
-            <h2>Fixtures & Results</h2>
+            <h2>Fixtures & Results </h2>
             <p style="padding-top:10px; padding-bottom:10px; margin-bottom:0px; font-size:1.1rem;">
                 {{ \Carbon\Carbon::parse($date)->format('d F Y') }} -  {{ $gamesOnDate->first()->competition_round_id }}
             </p>
@@ -183,7 +200,9 @@
        
         <a href="{{ route('seasons.index') }}" class="btn btn-primary">Back to Seasons</a>
         <a href="{{ route('games.create', ['season_id' => $competition->season->id, 'competition_id' => $competition->id]) }}" class="btn btn-primary">Create Game</a>
+        <a href="{{ route('games.edit', ['competition' => $competition->id]) }}" class="btn btn-primary">Edit Games</a>
     </p>
+    
 
 
 

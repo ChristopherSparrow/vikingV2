@@ -46,4 +46,14 @@ class CompetitionController extends Controller
     return response()->json($competitions);
 }
 
+public function editGames($competitionId)
+{
+    $competition = Competition::findOrFail($competitionId);
+    $games = $competition->games()->orderBy('date', 'desc')->get()->groupBy(function($game) {
+        return $game->date->format('Y-m-d');
+    });
+
+    return view('competitions.gamesedit', compact('competition', 'games'));
+}
+
 }

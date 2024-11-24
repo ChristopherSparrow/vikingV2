@@ -14,6 +14,17 @@
     transition: transform 0.3s ease-in-out;
 }
 
+.accordian-viking {
+    background: linear-gradient(135deg, #056507,  #038706, #038706);
+    color: #fff;
+    
+}
+.accordian-button-viking{
+    background: linear-gradient(135deg, #056507,  #038706, #038706);
+    color: #fff;
+}
+
+
 .card-viking td {
     background-color: transparent;
     color: #fff;

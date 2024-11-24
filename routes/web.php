@@ -48,3 +48,4 @@ Route::get('frames/{frame}/edit', [FrameController::class, 'edit'])->name('frame
 
 Route::put('frames/{frame}', [FrameController::class, 'update'])->name('frames.update');
 Route::get('/games/create/{season_id}/{competition_id}', [GameController::class, 'create'])->name('games.create');
+Route::get('/competitions/{competition}/edit', [GameController::class, 'edit'])->name('games.edit');

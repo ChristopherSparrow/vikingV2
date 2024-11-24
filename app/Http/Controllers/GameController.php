@@ -93,33 +93,27 @@ class GameController extends Controller
     /**
      * Show the form for editing the specified game.
      */
-    public function edit(Game $game)
+    public function edit(Competition $competition)
     {
+        
+        $games = Game::where('competition_id', $competition->id)->get();
+        $players = Player::all();
         $teams = Team::all();
         $seasons = Season::all();
         $competitions = Competition::all();
-        return view('games.edit', compact('game', 'teams', 'seasons', 'competitions'));
+        return view('games.edit', compact( 'teams', 'seasons', 'competition', 'players','games'));
     }
 
     /**
      * Update the specified game in storage.
      */
-    public function update(Request $request, Game $game)
-    {
-        $request->validate([
-            'season_id' => 'required|exists:seasons,id',
-            'competition_id' => 'required|exists:competitions,id',
-            'home_team_id' => 'required|exists:teams,id',
-            'away_team_id' => 'required|exists:teams,id',
-            'date' => 'required|date',
-            'home_score' => 'nullable|integer',
-            'away_score' => 'nullable|integer',
-        ]);
+    public function update(Request $request, $game)
+{
+    $game = Game::findOrFail($game);
+    $game->update($request->all());
 
-        $game->update($request->all());
-
-        return redirect()->route('games.index')->with('success', 'Game updated successfully.');
-    }
+    return redirect()->back()->with('success', 'Game updated successfully');
+}
 
     /**
      * Remove the specified game from storage.
