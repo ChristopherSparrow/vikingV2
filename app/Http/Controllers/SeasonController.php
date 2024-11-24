@@ -6,6 +6,7 @@ use App\Models\Season;
 use App\Models\Team;
 use App\Models\Player;
 use App\Models\Game;
+use App\Models\Competition;
 
 use Illuminate\Http\Request;
 
@@ -30,7 +31,11 @@ class SeasonController extends Controller
             ->orderBy('date', 'asc')
             ->get()
             ->groupBy('date');
-        return view('viking', compact('seasons', 'upcomingGames',"teams")); // Pass seasons and upcoming games to the view
+        
+        // Assuming competition is related to the latest active season
+        $competition = Competition::where('season_id', $latestSeason->id)->first();
+    
+        return view('viking', compact('seasons', 'upcomingGames', 'teams', 'competition')); // Pass seasons, upcoming games, teams, and competition to the view
     }
     public function showTeams(Season $season)
     {

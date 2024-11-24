@@ -55,20 +55,9 @@
                                         <td>Lost</td>
                                         <td style="text-align: right;">Points</td>
                                     </tr>
-                                    @foreach($teams as $team)
                                     @php
-                                        $played = $team->games->where('season_id', $latestSeason->id)->where('competition_id', 1)->count();
-                                        $won = $team->games->filter(function($game) use ($team, $latestSeason) {
-                                            return $game->season_id == $latestSeason->id && (
-                                                ($game->home_team_id == $team->id && $game->home_score > $game->away_score) ||
-                                                ($game->away_team_id == $team->id && $game->away_score > $game->home_score)
-                                            );
-                                        })->count();
-                                        $drawn = $team->games->filter(function($game) use ($latestSeason) {
-                                            return $game->season_id == $latestSeason->id && $game->home_score == $game->away_score;
-                                        })->count();
-                                        $lost = $played - $won - $drawn;
-                                        $points = $team->games->where('season_id', $latestSeason->id)->sum(function($game) use ($team) {
+                                    $teams = $teams->sortByDesc(function($team) use ($competition) {
+                                        return $team->games->where('competition_id', $competition->id)->sum(function($game) use ($team) {
                                             if ($game->home_team_id == $team->id) {
                                                 return $game->home_score;
                                             } elseif ($game->away_team_id == $team->id) {
@@ -76,7 +65,31 @@
                                             }
                                             return 0;
                                         });
-                                    @endphp
+                                    });
+                                @endphp
+
+                                @foreach($teams as $team)
+                                @php
+                                    $played = $team->games->where('competition_id', $competition->id)->count();
+                                    $won = $team->games->filter(function($game) use ($team, $competition) {
+                                        return $game->competition_id == $competition->id && (
+                                            ($game->home_team_id == $team->id && $game->home_score > $game->away_score) ||
+                                            ($game->away_team_id == $team->id && $game->away_score > $game->home_score)
+                                        );
+                                    })->count();
+                                    $drawn = $team->games->filter(function($game) use ($competition) {
+                                        return $game->competition_id == $competition->id && $game->home_score == $game->away_score;
+                                    })->count();
+                                    $lost = $played - $won - $drawn;
+                                    $points = $team->games->where('competition_id', $competition->id)->sum(function($game) use ($team) {
+                                        if ($game->home_team_id == $team->id) {
+                                            return $game->home_score;
+                                        } elseif ($game->away_team_id == $team->id) {
+                                            return $game->away_score;
+                                        }
+                                        return 0;
+                                    });
+                                @endphp
                                     <tr>
                                         <td>{{ $team->name }}</td>
                                         <td>{{ $played }}</td>
