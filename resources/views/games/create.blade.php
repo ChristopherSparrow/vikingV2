@@ -55,19 +55,21 @@
    @endif
    @if($selectedCompetition && in_array($selectedCompetition->type, ['team_knockout']))
    <div class="form-group">
-    <label for="competition_round_id">Competition Round</label>
-    <select name="competition_round_id" id="competition_round_id" class="form-control" required>
-    
-        <option value="Preliminary Round">Preliminary</option>
-        <option value="First Round">First Round</option> 
-        <option value="Second Round">Second Round</option>
-        <option value="Third Round">Third Round</option>
-        <option value="Quarter Finals">Quarter</option>
-        <option value="Semi Finals">Semi</option>
-        <option value="Final">Final</option>
-    </select>
-
-</div>
+        <label for="competition_round_id">Competition Round</label>
+        <select name="competition_round_id" id="competition_round_id" class="form-control" required>
+            <option value="Preliminary Round">Preliminary</option>
+            <option value="First Round">First Round</option> 
+            <option value="Second Round">Second Round</option>
+            <option value="Third Round">Third Round</option>
+            <option value="Quarter Finals">Quarter</option>
+            <option value="Semi Finals">Semi</option>
+            <option value="Final">Final</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="location_name">Location</label>
+        <input type="text" name="location_name" id="location_name" class="form-control">
+    </div>
    <!-- Home Team -->
    <div class="form-group">
        <label for="home_team_id">Home Team</label>
@@ -103,6 +105,10 @@
                         <option value="Final (Best of 5)">Final</option>
                     </select>
 
+                </div>
+                <div class="form-group">
+                    <label for="location_name">Location</label>
+                    <input type="text" name="location_name" id="location_name" class="form-control">
                 </div>
 
      

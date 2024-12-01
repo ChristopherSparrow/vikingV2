@@ -19,7 +19,8 @@ class Game extends Model
         'away_score',
         'home_player_id',
         'away_player_id',
-        'competition_round_id', // Add this line
+        'competition_round_id',
+        'location_name', // Add this line
    
     ];
 

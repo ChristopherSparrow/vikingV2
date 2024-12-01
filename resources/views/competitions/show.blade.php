@@ -105,7 +105,7 @@
                             <h2 class="accordion-header" id="heading-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}" aria-expanded="true" aria-controls="collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}">
                                 @if($competition->type === 'team_knockout')
-                                    {{ \Carbon\Carbon::parse($date)->format('d F Y') }} - Round {{ $gamesOnDate->first()->round }}
+                                    {{ \Carbon\Carbon::parse($date)->format('d F Y') }} -  {{ $gamesOnDate->first()->competition_round_id }}
                                 @else
                                     {{ \Carbon\Carbon::parse($date)->format('d F Y') }}
                                 @endif
@@ -115,27 +115,44 @@
                                 <div class="accordion-body ">
                                 <table style="width: 100%;">
                                     @foreach($gamesOnDate as $game)
-                                    <tr>
-                                    <td>
-                                        <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px;">
-                                        {{ $game->homeTeam->name }}<br>{{ $game->awayTeam->name }}
-                                        </p>
-                                    </td>
                                     @if($competition->type === 'league')
-                                    <td>
-                                        <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: left; font-size:1.5rem;">
-                                        <a style="color:#ffffff;" href="{{ route('games.show', ['game' => $game->id]) }}">
-                                            <i class="bi bi-info-circle"></i>
-                                        </a>
-                                        </p>
-                                    </td>
+                                        <tr>
+                                            <td>
+                                            <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px;">
+                                            {{ $game->homeTeam->name }}<br>{{ $game->awayTeam->name }}
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: left; font-size:1.5rem;">
+                                            <a style="color:#ffffff;" href="{{ route('games.show', ['game' => $game->id]) }}">
+                                                <i class="bi bi-info-circle"></i>
+                                            </a>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: right;">
+                                            {{ $game->home_score ?? 0 }}<br>{{ $game->away_score ?? 0 }}
+                                            </p>
+                                        </td>
+                                        </tr>
+                                    @else
+                                    <tr>
+                                        <td>
+                                            <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px;">
+                                            {{ $game->homeTeam->name }}<br>{{ $game->awayTeam->name }}<br><i class="bi bi-geo-alt"></i>
+                                            {{ $game->location_name }}
+    
+    
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: right;">
+                                            {{ $game->home_score ?? 0 }}<br>{{ $game->away_score ?? 0 }}
+                                            </p>
+                                        </td>
+                                        </tr>
                                     @endif
-                                    <td>
-                                        <p style="padding-top:0px; padding-bottom:10px; margin-bottom:0px; text-align: right;">
-                                        {{ $game->home_score ?? 0 }}<br>{{ $game->away_score ?? 0 }}
-                                        </p>
-                                    </td>
-                                    </tr>
+
                                     @endforeach
                                 </table>
                                 </div>

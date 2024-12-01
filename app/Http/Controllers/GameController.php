@@ -52,6 +52,7 @@ class GameController extends Controller
             'home_player_id' => 'nullable|exists:players,id',
             'away_player_id' => 'nullable|exists:players,id',
             'competition_round_id' => 'nullable|string', // Add this line
+            'locaton_name' => 'nullable|string', // Add this line
    
         ]);
 
