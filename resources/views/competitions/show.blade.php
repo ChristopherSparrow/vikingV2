@@ -101,14 +101,18 @@
                         <h2>Fixtures & Results</h2>
                         <div class="accordion" id="fixturesAccordion">
                             @foreach($games as $date => $gamesOnDate)
-                            <div class="accordion-item accordian-button-viking">
-                            <h2 class="accordion-header accordian-button-viking" id="heading-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}">
-                                <button class="accordion-button accordian-button-viking" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}" aria-expanded="true" aria-controls="collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}">
-                                {{ \Carbon\Carbon::parse($date)->format('d F Y') }}
+                            <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}" aria-expanded="true" aria-controls="collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}">
+                                @if($competition->type === 'team_knockout')
+                                    {{ \Carbon\Carbon::parse($date)->format('d F Y') }} - Round {{ $gamesOnDate->first()->round }}
+                                @else
+                                    {{ \Carbon\Carbon::parse($date)->format('d F Y') }}
+                                @endif
                                 </button>
                             </h2>
-                            <div id="collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}" class="accordion-collapse accordian-button-viking collapse" aria-labelledby="heading-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}" data-bs-parent="#fixturesAccordion">
-                                <div class="accordion-body accordian-viking">
+                            <div id="collapse-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}" class="accordion-collapse  collapse" aria-labelledby="heading-{{ \Carbon\Carbon::parse($date)->format('Ymd') }}" data-bs-parent="#fixturesAccordion">
+                                <div class="accordion-body ">
                                 <table style="width: 100%;">
                                     @foreach($gamesOnDate as $game)
                                     <tr>
